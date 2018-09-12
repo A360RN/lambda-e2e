@@ -1,0 +1,37 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Lambda Test</title>
+</head>
+<body>
+    <button>go</button>
+
+    <ul></ul>
+
+    <script>
+        document.querySelector('button').addEventListener('click', () => {
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', 'https://82g622mv6i.execute-api.us-east-1.amazonaws.com/dev/people');
+            xhr.onreadystatechange = (evt) => {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+                    const ul = document.querySelector('ul');
+                    response.forEach(person => {
+                        const li = document.createElement('li');
+                        const text = `${person.id} - ${person.name} - ${person.surname}`;
+                        const textNode = document.createTextNode(text);
+                        li.appendChild(textNode);
+                        ul.appendChild(li);
+                    });
+                }
+            }
+            xhr.onerror = (evt) => {
+                console.log('error', evt);
+            }
+            xhr.send();
+        });
+    </script>
+</body>
+</html>
